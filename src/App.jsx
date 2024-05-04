@@ -13,7 +13,7 @@ export const App = () => {
   return (
     <div className='App'>
       <header>
-         <h1>ReactChat⚛️</h1>
+         <h1>Sistemas Multimidia Chat</h1>
         <SignOut />
       </header>
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
@@ -62,13 +62,19 @@ export const ChatRoom = () => {
 };
 
 export const ChatMessage = (props) => {
-  const { text, uid, photoURL } = props.message;
+  const { text, uid, photoURL, createdAt } = props.message;
+
+  function formatTimeStamp(){
+    if(!createdAt) return '';
+    return createdAt.toDate().toLocaleString('pt-BR');
+  }
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
   return (
     <div className={`message ${messageClass}`}>
       <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
       <p>{text}</p>
+      <span style={{color:"white", paddingLeft: "0.5rem", paddingRight: "0.5rem"}} >{formatTimeStamp()}</span>
     </div>
   );
 };
