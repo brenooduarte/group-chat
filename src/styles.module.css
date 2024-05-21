@@ -1,0 +1,87 @@
+@font-face {
+  font-family: 'OpenSans';
+  src: url(assets/fonts/OpenSans-VariableFont_wdth\,wght.ttf) format('truetype');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000;
+  font-family: 'OpenSans', sans-serif;
+}
+
+form {
+  position: fixed;
+  width: 100%;
+  max-width: 42rem;
+  height: 4.5rem;
+
+  bottom: 0;
+  background-color: rgb(24, 23, 23);
+  display: flex;
+  font-size: 1.5rem;
+}
+
+form button {
+  width: 20%;
+  background-color: rgb(56, 56, 143);
+}
+
+input {
+  line-height: 1.5;
+  width: 100%;
+  font-size: 1.5rem;
+  background: rgb(58, 58, 58);
+  color: white;
+  outline: none;
+  border: none;
+  padding: 0 10px;
+}
+
+button {
+  display: inline-block;
+  background: transparent;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.chat {
+  text-align: center;
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.chat header {
+  position: fixed;
+  width: 100%;
+  max-width: 42rem;
+  height: 4.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 1rem 2rem;
+
+  font-size: 1rem;
+  background-color: #181b23;
+  color: #fff;
+}
+
+.chat section {
+  padding: 4.5rem 0;
+  background-color: #101623;
+}
+
+.not_authenticated section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
