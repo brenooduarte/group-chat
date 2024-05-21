@@ -1,0 +1,53 @@
+.container {
+  min-width: 8rem;
+  width: fit-content;
+
+  display: flex;
+  text-align: start;
+  padding: 0.75rem 0.5rem;
+
+  border-radius: 0.925rem 0.925rem 0.925rem 0;
+  background-color: #3d608c;
+}
+
+.sent {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+  text-align: end;
+  
+  border-radius: 0.925rem 0.925rem 0 0.925rem;
+  background-color: #181b23;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+}
+
+.content > span {
+  font-weight: 600;
+  color: #1b2536;
+  margin-bottom: 0.25rem;
+}
+
+.content > p {
+  max-width: 24rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 120%;
+  color: #FFF;
+}
+.content > small {
+  color: #051835;
+  font-size: 0.825rem;
+}
+
+.sent .content > small {
+  color: #6292ce;
+}
+
+.sent .content > span {
+  color: #637074;
+}

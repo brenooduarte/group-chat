@@ -1,0 +1,27 @@
+.textbox {
+  height: 4.5rem;
+}
+
+.textbox input {
+  width: 100%;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  padding: 0 1rem;
+  background-color: #272b36;
+}
+
+.textbox button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: #0D3B66;
+
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+}
+
+.textbox button:disabled {
+  filter: brightness(0.5) grayscale(0.8);
+  cursor: not-allowed;
+}
