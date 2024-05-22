@@ -22,7 +22,7 @@ export const Message = ({ payload }) => {
   return (
     <div className={classes}>
       <img src={photoURL} />
-      <div  className={styles.content}>
+      <div className={styles.content}>
         <span>{username}</span>
         <p>{text}</p>
         {hours && minutes && (

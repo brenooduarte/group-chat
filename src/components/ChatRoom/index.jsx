@@ -42,8 +42,6 @@ export const ChatRoom = () => {
     chatBottomRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  console.log(messages);
-
   return (
     <>
       <div className={styles.message_list}>
