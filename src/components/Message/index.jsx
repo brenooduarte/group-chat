@@ -3,8 +3,6 @@ import styles from './styles.module.css';
 import { auth } from '../../main';
 import { formatDatetime } from '../../utils/date';
 import classNames from 'classnames';
-import { Avatar } from '../Avatar';
-
 
 export const Message = ({ payload }) => {
   const {
@@ -13,8 +11,6 @@ export const Message = ({ payload }) => {
     text,
     photoURL,
     createdAt,
-    avatarBackgroundColor,
-    avatarTextColor,
   } = payload;
 
   const isMessageSent = authorId === auth.currentUser.uid;
@@ -25,13 +21,7 @@ export const Message = ({ payload }) => {
 
   return (
     <div className={classes}>
-      <Avatar
-        photoURL={photoURL}
-        displayName={authorName}
-        backgroundColor={avatarBackgroundColor}
-        textColor={avatarTextColor}
-        isMessageSent={isMessageSent}
-      />
+      <img src={photoURL} />
       <div className={styles.content}>
         <span>{username}</span>
         <p>{text}</p>

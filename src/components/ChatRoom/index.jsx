@@ -12,10 +12,9 @@ import { auth } from "../../main";
 import { databaseApp } from "../../services/firebaseConfig";
 import { Message } from "../Message";
 import { TextBox } from '../TextBox';
-import { getAvatarColors } from '../../utils/styles';
 
 export const ChatRoom = () => {
-  const startOfChatRef = useRef()
+  const chatBottomRef = useRef()
   const [message, setMessage] = useState('');
 
   const messagesRef = collection(databaseApp, 'messages');
@@ -27,39 +26,29 @@ export const ChatRoom = () => {
 
     const {
       photoURL,
-      uid,
-      displayName,
-      avatarBackgroundColor,
-      avatarTextColor,
+      uid: authorId,
+      displayName: authorName,
     } = auth.currentUser;
 
-    const messagePayload = {
+    await sendMessage(messagesRef, {
       text: message,
-      authorName: displayName,
-      authorId: uid,
-      photoURL,
       createdAt: serverTimestamp(),
-    };
-
-    if (!avatarBackgroundColor && !avatarTextColor) {
-      const avatar = getAvatarColors();
-
-      messagePayload['avatarBackgroundColor'] = avatar.backgroundColor;
-      messagePayload['avatarTextColor'] = avatar.textColor;
-    }
-
-    await sendMessage(messagesRef, messagePayload);
+      authorName,
+      authorId,
+      photoURL,
+    });
   
     setMessage('');
-    startOfChatRef.current.scrollIntoView({behavior: 'smooth'});
+    chatBottomRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <>
-      <div ref={startOfChatRef} className={styles.message_list}>
+      <div className={styles.message_list}>
         {messages && messages.map((message, index) => (
           <Message key={index} payload={message} />
         ))}
+        <div ref={chatBottomRef}></div>
       </div>
       <TextBox
         onSubmit={handleMessageSending}
