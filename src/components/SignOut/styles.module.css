@@ -1,0 +1,14 @@
+.signout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0;
+
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.signout:hover {
+  color: rgb(255, 150, 150);
+}

@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBRUoS-7eTbMgBfyFNaiNKdm6hpnrl1eL0",
-  authDomain: "chat-2117c.firebaseapp.com",
-  projectId: "chat-2117c",
-  storageBucket: "chat-2117c.appspot.com",
-  messagingSenderId: "439084894280",
-  appId: "1:439084894280:web:af35d0ec37369188a4707d",
-  measurementId: "G-M9P9MDK28V"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
 
 export const app = initializeApp(firebaseConfig);
