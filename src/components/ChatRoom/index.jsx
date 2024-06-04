@@ -12,6 +12,7 @@ import { auth } from "../../main";
 import { databaseApp } from "../../services/firebaseConfig";
 import { Message } from "../Message";
 import { TextBox } from '../TextBox';
+import { UploadImage } from "../UploadImage";
 
 export const ChatRoom = () => {
   const chatBottomRef = useRef()
@@ -50,11 +51,12 @@ export const ChatRoom = () => {
         ))}
         <div ref={chatBottomRef}></div>
       </div>
+      <UploadImage />
       <TextBox
         onSubmit={handleMessageSending}
         onChange={(e) => setMessage(e.target.value)}
         value={message}
-      />
+      /> 
     </>
   );
 };

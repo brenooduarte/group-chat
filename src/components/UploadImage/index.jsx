@@ -1,10 +1,10 @@
 import "./styles.css";
 import { useState } from "react";
-import { storage } from "../../services/firebaseConfig";
+import { storage } from "../../services/firebaseConfig"
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { FiPaperclip } from "react-icons/fi";
 
-function UploadImage() {
+export const UploadImage = () => {
   const [imgURL, setImgURL] = useState("");
   const [progressPorcent, setPorgessPorcent] = useState(0);
 
@@ -50,5 +50,3 @@ function UploadImage() {
     </div>
   );
 }
-
-export default UploadImage;
