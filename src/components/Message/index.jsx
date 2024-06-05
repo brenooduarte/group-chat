@@ -23,19 +23,22 @@ export const Message = ({ payload }) => {
 
   return (
     <div className={classes}>
-      {photoURL && <img src={photoURL} alt="Photo" />} {/* Renderiza a foto se houver URL */}
+      {photoURL && <img src={photoURL} alt="Photo" />} 
+
       {videoURL && (
         <video controls>
           <source src={videoURL} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-      )} {/* Renderiza o vídeo se houver URL */}
+      )} 
+
       {audioURL && (
         <audio controls>
           <source src={audioURL} type="audio/mpeg" />
           Your browser does not support the audio tag.
         </audio>
-      )} {/* Renderiza o áudio se houver URL */}
+      )} 
+      
       <div className={styles.content}>
         <span>{username}</span>
         <p>{text}</p>

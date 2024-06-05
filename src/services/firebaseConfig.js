@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage"; 
+import { getStorage, ref, listAll, getMetadata, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -15,3 +15,36 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const databaseApp = getFirestore(app);
 export const storage = getStorage(app); 
+
+const listFilesWithMetadata = async (folder) => {
+  const storage = getStorage();
+  const folderRef = ref(storage, folder);
+  const result = await listAll(folderRef);
+
+  const filesMetadata = await Promise.all(
+    result.items.map(async (itemRef) => {
+      const metadata = await getMetadata(itemRef);
+      const downloadURL = await getDownloadURL(itemRef); 
+      return {
+        ...metadata,
+        downloadURL,
+      };
+    })
+  );
+
+  return filesMetadata;
+};
+
+const getAllFiles = async () => {
+  const images = await listFilesWithMetadata('images');
+  const videos = await listFilesWithMetadata('videos');
+  const audios = await listFilesWithMetadata('audios');
+
+  return [...images, ...videos, ...audios];
+};
+
+export const getOrderedFiles = async () => {
+  const allFiles = await getAllFiles();
+  const orderedFiles = allFiles.sort((a, b) => new Date(a.timeCreated) - new Date(b.timeCreated));
+  return orderedFiles;
+};
