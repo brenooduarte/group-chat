@@ -1,52 +1,77 @@
-import "./styles.css";
-import { useState } from "react";
-import { storage } from "../../services/firebaseConfig"
+import React, { useState } from 'react';
+import { FiPaperclip, FiCamera, FiVideo, FiMic, FiSend } from 'react-icons/fi';
+import { storage } from "../../services/firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { FiPaperclip } from "react-icons/fi";
+import "./styles.css";
 
-export const UploadImage = () => {
-  const [imgURL, setImgURL] = useState("");
-  const [progressPorcent, setPorgessPorcent] = useState(0);
+export const UploadImage = ({ setImgURL, setVideoURL, setAudioURL }) => {
+  const [showOptions, setShowOptions] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileType, setFileType] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const file = event.target[0]?.files[0];
-    if (!file) return;
+  const handleFileChange = (event, type) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setFileType(type);
+    }
+  };
 
-    const storageRef = ref(storage, `images/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+  const handleFileUpload = () => {
+    if (!selectedFile) return;
+
+    const storageRef = ref(storage, `${fileType}/${selectedFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setPorgessPorcent(progress);
+        // Progress handling logic (optional)
       },
       (error) => {
         alert(error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImgURL(downloadURL);
+          if (fileType === 'images') {
+            setImgURL(downloadURL);
+          } else if (fileType === 'videos') {
+            setVideoURL(downloadURL);
+          } else if (fileType === 'audio') {
+            setAudioURL(downloadURL);
+          }
+          setSelectedFile(null);
+          setFileType('');
+          setShowOptions(false);
         });
       }
     );
   };
-  return (
-    <div className="App">
-      <header className="App-header">
-        <form onSubmit={handleSubmit}>
-          <input type="file" />
-          <button type="submit"><FiPaperclip /></button>
-        </form>
 
-          <input type="file" />
-          <button className="button-clip" type="submit"><FiPaperclip /></button>
-        {!imgURL && <p>{progressPorcent}%</p>}
-        {imgURL && <img src={imgURL} alt="Imagem" height={200} />}
-      </header>
+  return (
+    <div >
+      <FiPaperclip  onClick={() => setShowOptions(!showOptions)} />
+      {showOptions && (
+        <div >
+          <label >
+            <FiCamera />
+            <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'images')} style={{ display: 'none' }} />
+          </label>
+          <label >
+            <FiVideo />
+            <input type="file" accept="video/*" onChange={(e) => handleFileChange(e, 'videos')} style={{ display: 'none' }} />
+          </label>
+          <label >
+            <FiMic />
+            <input type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 'audio')} style={{ display: 'none' }} />
+          </label>
+          {selectedFile && (
+            <button onClick={handleFileUpload}>
+              <FiSend />
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
-}
+};

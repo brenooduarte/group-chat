@@ -1,5 +1,5 @@
+import React from 'react';
 import styles from './styles.module.css';
-
 import { auth } from '../../main';
 import { formatDatetime } from '../../utils/date';
 import classNames from 'classnames';
@@ -10,6 +10,8 @@ export const Message = ({ payload }) => {
     authorName,
     text,
     photoURL,
+    videoURL,
+    audioURL,
     createdAt,
   } = payload;
 
@@ -21,7 +23,19 @@ export const Message = ({ payload }) => {
 
   return (
     <div className={classes}>
-      <img src={photoURL} />
+      {photoURL && <img src={photoURL} alt="Photo" />} {/* Renderiza a foto se houver URL */}
+      {videoURL && (
+        <video controls>
+          <source src={videoURL} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      )} {/* Renderiza o vídeo se houver URL */}
+      {audioURL && (
+        <audio controls>
+          <source src={audioURL} type="audio/mpeg" />
+          Your browser does not support the audio tag.
+        </audio>
+      )} {/* Renderiza o áudio se houver URL */}
       <div className={styles.content}>
         <span>{username}</span>
         <p>{text}</p>
