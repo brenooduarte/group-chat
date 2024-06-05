@@ -51,7 +51,7 @@ export const ChatRoom = () => {
         ))}
         <div ref={chatBottomRef}></div>
       </div>
-      <UploadImage />
+     
       <TextBox
         onSubmit={handleMessageSending}
         onChange={(e) => setMessage(e.target.value)}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FiPaperclip, FiCamera, FiVideo, FiMic, FiSend } from 'react-icons/fi';
+import { FiPaperclip, FiCamera, FiVideo, FiMic, FiSend, FiCrosshair, FiX } from 'react-icons/fi';
 import { storage } from "../../services/firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import "./styles.css";
@@ -17,61 +17,77 @@ export const UploadImage = ({ setImgURL, setVideoURL, setAudioURL }) => {
     }
   };
 
-  const handleFileUpload = () => {
+  const handleFileUpload = (e) => {
+    e.preventDefault()
     if (!selectedFile) return;
 
     const storageRef = ref(storage, `${fileType}/${selectedFile.name}`);
     const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // Progress handling logic (optional)
-      },
-      (error) => {
-        alert(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          if (fileType === 'images') {
-            setImgURL(downloadURL);
-          } else if (fileType === 'videos') {
-            setVideoURL(downloadURL);
-          } else if (fileType === 'audio') {
-            setAudioURL(downloadURL);
-          }
-          setSelectedFile(null);
-          setFileType('');
-          setShowOptions(false);
-        });
-      }
-    );
+    try {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Progress handling logic (optional)
+        },
+        (error) => {
+          alert(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            if (fileType === 'images') {
+              setImgURL(downloadURL);
+            } else if (fileType === 'videos') {
+              setVideoURL(downloadURL);
+            } else if (fileType === 'audio') {
+              setAudioURL(downloadURL);
+            }
+            setSelectedFile(null);
+            setFileType('');
+            setShowOptions(false);
+          });
+        }
+      );
+      
+    } catch (error) {
+      console.log(error)  
+    }
+    finally {
+      setSelectedFile(null);
+      setFileType('');
+      setShowOptions(false);
+    }
   };
 
   return (
-    <div >
-      <FiPaperclip  onClick={() => setShowOptions(!showOptions)} />
+    <>
+      <FiPaperclip onClick={() => setShowOptions(!showOptions)} className='file-input'/>
       {showOptions && (
-        <div >
-          <label >
-            <FiCamera />
-            <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'images')} style={{ display: 'none' }} />
-          </label>
-          <label >
-            <FiVideo />
-            <input type="file" accept="video/*" onChange={(e) => handleFileChange(e, 'videos')} style={{ display: 'none' }} />
-          </label>
-          <label >
-            <FiMic />
-            <input type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 'audio')} style={{ display: 'none' }} />
-          </label>
+        <div className='modal'>
+             <div className='modal-body'>
+          <div className='modal-content'>
+            <button type='button' onClick={() => document.getElementById('image-input').click()}>
+              <FiCamera />
+              <input id="image-input" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'images')} style={{ display: 'none' }} />
+            </button>
+            <button type='button' onClick={() => document.getElementById('video-input').click()}>
+              <FiVideo />
+              <input id="video-input" type="file" accept="video/*" onChange={(e) => handleFileChange(e, 'videos')} style={{ display: 'none' }} />
+            </button>
+            <button type='button' onClick={() => document.getElementById('audio-input').click()}>
+              <FiMic />
+              <input id="audio-input" type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 'audio')} style={{ display: 'none' }} />
+            </button>
+            <FiX  onClick={() => setShowOptions(false)} className='modal-close'/>
+          </div>
           {selectedFile && (
             <button onClick={handleFileUpload}>
               <FiSend />
             </button>
           )}
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
