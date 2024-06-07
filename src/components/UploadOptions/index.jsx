@@ -4,7 +4,7 @@ import { storage } from "../../services/firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import "./styles.css";
 
-export const UploadImage = ({ setImgURL, setVideoURL, setAudioURL }) => {
+export const UploadOptions = ({ setImgURL, setVideoURL, setAudioURL }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileType, setFileType] = useState('');
@@ -18,12 +18,12 @@ export const UploadImage = ({ setImgURL, setVideoURL, setAudioURL }) => {
   };
 
   const handleFileUpload = (e) => {
-    e.preventDefault()
+    e.preventDefault() 
     if (!selectedFile) return;
 
     const storageRef = ref(storage, `${fileType}/${selectedFile.name}`);
     const uploadTask = uploadBytesResumable(storageRef, selectedFile);
-
+    
     try {
       uploadTask.on(
         "state_changed",

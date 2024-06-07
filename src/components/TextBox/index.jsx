@@ -1,4 +1,4 @@
-import { UploadImage } from '../UploadImage';
+import { UploadOptions } from '../UploadOptions';
 import styles from './styles.module.css'
 import { RiSendPlaneFill } from "react-icons/ri";
 
@@ -12,7 +12,7 @@ export const TextBox = ({ onSubmit, onChange, value }) => {
         value={value}
         onChange={onChange}
       />
-      <UploadImage />
+      <UploadOptions />
       <button onClick={onSubmit} disabled={isDisabled} className='input-button'>
         <RiSendPlaneFill />
       </button>
