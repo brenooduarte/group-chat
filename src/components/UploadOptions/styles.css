@@ -78,12 +78,18 @@ button {
   gap: 5rem;
 }
 
-.modal-content button {
+.modal-content span {
   background-color: transparent;
   border: none;
   font-size: 2rem;
   height: fit-content;
   cursor: pointer;
+}
+
+.modal-content span:hover {
+  color: #0d3b66;
+  transform: scale(1.1);
+  translate: 0.5s;
 }
 .modal-header {
   display: flex;
@@ -113,13 +119,24 @@ button {
   border-radius: 0.5rem;
   gap: 5rem;
 
-  height: 25%;
-  width: 25%;
+  height: 40%;
+  width: 50%;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .modal-body {
+    width: 80%;
+    height: 90%;
+  }
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .modal-footer {

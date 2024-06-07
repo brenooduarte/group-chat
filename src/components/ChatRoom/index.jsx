@@ -13,16 +13,32 @@ import { getOrderedFiles } from '../../services/firebaseConfig';
 import { Message } from "../Message";
 import { TextBox } from '../TextBox';
 
+import FileDisplay from '../FileDisplay/FileDisplay';
+
 export const ChatRoom = () => {
   const chatBottomRef = useRef();
   const [message, setMessage] = useState('');
   const [mediaFiles, setMediaFiles] = useState([]);
+  const [viewFile, setViewFile] = useState(false); 
+  const [fileDisplayUrl, setFileDisplayUrl] = useState(''); 
 
   const messagesRef = collection(databaseApp, 'messages');
   const rawQuery = query(messagesRef);
   const [messages] = useCollectionData(rawQuery, { idField: 'id' });
 
   const [mergedMessages, setMergedMessages] = useState([]);
+
+  const displayFile = (url) => {
+    setFileDisplayUrl(url);
+    setViewFile(true);
+    console.log(url);
+    console.log(viewFile)
+  };
+
+  const closeFileDisplay = () => {
+    setViewFile(false);
+    setFileDisplayUrl('');
+  };
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -76,12 +92,18 @@ export const ChatRoom = () => {
 
   return (
     <>
+      {viewFile && (
+        <>
+        <span>OMG</span>
+        <FileDisplay fileUrl={fileDisplayUrl} onClose={closeFileDisplay} />
+        </>
+      )}
       <div className={styles.message_list}>
         {mergedMessages && mergedMessages.map((message, index) => (
           message && message.contentType ? (
-            <div key={index}>
+            <div key={index} onClick={() => displayFile(message.downloadURL)}>
               {message.contentType.startsWith('image/') && 
-              <img src={message.downloadURL} alt="Image" className={styles.image_message} />}
+                <img src={message.downloadURL} alt="Image" className={styles.image_message} />}
               {message.contentType.startsWith('video/') && (
                 <video className={styles.video_message} controls>
                   <source src={message.downloadURL} type="video/mp4" />
@@ -89,8 +111,8 @@ export const ChatRoom = () => {
                 </video>
               )}
               {message.contentType.startsWith('audio/') && (
-                <audio controls type="audio/mpeg">
-                  <source src={message.downloadURL} />
+                <audio controls>
+                  <source src={message.downloadURL} type="audio/mpeg" />
                   Your browser does not support the audio tag.
                 </audio>
               )}

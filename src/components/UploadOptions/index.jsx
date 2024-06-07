@@ -66,28 +66,32 @@ export const UploadOptions = ({ setImgURL, setVideoURL, setAudioURL }) => {
         <div className='modal'>
              <div className='modal-body'>
           <div className='modal-content'>
-            <button type='button' onClick={() => document.getElementById('image-input').click()}>
+            <span type='button' onClick={() => document.getElementById('image-input').click()}>
               <FiCamera />
               <input id="image-input" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'images')} style={{ display: 'none' }} />
-            </button>
-            <button type='button' onClick={() => document.getElementById('video-input').click()}>
+            </span>
+            <span type='button' onClick={() => document.getElementById('video-input').click()}>
               <FiVideo />
               <input id="video-input" type="file" accept="video/*" onChange={(e) => handleFileChange(e, 'videos')} style={{ display: 'none' }} />
-            </button>
-            <button type='button' onClick={() => document.getElementById('audio-input').click()}>
+            </span>
+            <span type='button' onClick={() => document.getElementById('audio-input').click()}>
               <FiMic />
               <input id="audio-input" type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 'audio')} style={{ display: 'none' }} />
-            </button>
+            </span>
             <FiX  onClick={() => setShowOptions(false)} className='modal-close'/>
           </div>
           {selectedFile && (
+            <>
+            <span>{selectedFile.name}</span>
             <button onClick={handleFileUpload}>
               <FiSend />
             </button>
+            </>
           )}
           </div>
         </div>
       )}
+    
     </>
   );
 };
