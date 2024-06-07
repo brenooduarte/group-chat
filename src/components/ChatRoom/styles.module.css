@@ -17,3 +17,9 @@
 .message_list::-webkit-scrollbar-thumb {
   background: #171b27;
 }
+
+.image-message {
+  border-radius: 0;
+  height: auto !important;
+  width: 100% !important;
+}

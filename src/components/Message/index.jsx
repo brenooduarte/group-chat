@@ -6,7 +6,6 @@ import classNames from 'classnames';
 const formatDatetime = (date) => {
   const dateObj = date instanceof Date ? date : new Date(date);
   if (isNaN(dateObj.getTime())) {
-    console.error('Invalid date:', date);
     return { hours: undefined, minutes: undefined };
   }
 

@@ -20,20 +20,37 @@ export const ChatRoom = () => {
   const [mediaFiles, setMediaFiles] = useState([]);
 
   const messagesRef = collection(databaseApp, 'messages');
-  const rawQuery = query(messagesRef, orderBy('createdAt'));
+  const rawQuery = query(messagesRef);
   const [messages] = useCollectionData(rawQuery, { idField: 'id' });
+
+  const [mergedMessages, setMergedMessages] = useState([]);
 
   useEffect(() => {
     const fetchFiles = async () => {
       try {
         const files = await getOrderedFiles();
-        setMediaFiles(files);
+        const filesWithTimeStamp = files.map((file) => ({
+          ...file,
+          createdAt: new Date(file.timeCreated).getTime(), // Convert to milliseconds
+        }));
+        setMediaFiles(filesWithTimeStamp);
       } catch (error) {
         console.error("Error fetching media files:", error);
       }
     };
     fetchFiles();
   }, []);
+
+  useEffect(() => {
+    if (messages && mediaFiles.length) {
+      const combinedMessages = [...messages, ...mediaFiles].map(item => ({
+        ...item,
+        createdAt: item.createdAt && item.createdAt.toMillis ? item.createdAt.toMillis() : item.createdAt,
+      }));
+      const sortedMessages = combinedMessages.sort((a, b) => a.createdAt - b.createdAt);
+       setMergedMessages(()=>[...sortedMessages]);
+    }
+  }, [messages, mediaFiles]);
 
   const handleMessageSending = async (e) => {
     e.preventDefault();
@@ -53,31 +70,35 @@ export const ChatRoom = () => {
     });
   
     setMessage('');
-    chatBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (chatBottomRef.current) {
+      chatBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
     <>
       <div className={styles.message_list}>
-        {messages && messages.map((message, index) => (
-          <Message key={index} payload={message} />
-        ))}
-        {mediaFiles && mediaFiles.map((file, index) => (
-          <div key={index}>
-            {file.contentType.startsWith('image/') && <img src={file.downloadURL} alt="Image" />}
-            {file.contentType.startsWith('video/') && (
-              <video controls>
-                <source src={file.downloadURL} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            )}
-            {file.contentType.startsWith('audio/') && (
-              <audio controls>
-                <source src={file.downloadURL} />
-                Your browser does not support the audio tag.
-              </audio>
-            )}
-          </div>
+        {mergedMessages && mergedMessages.map((message, index) => (
+          message && message.contentType ? (
+            <div key={index}>
+              {message.contentType.startsWith('image/') && 
+              <img src={message.downloadURL} alt="Image" className='image-message' />}
+              {message.contentType.startsWith('video/') && (
+                <video controls>
+                  <source src={message.downloadURL} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
+              {message.contentType.startsWith('audio/') && (
+                <audio controls>
+                  <source src={message.downloadURL} />
+                  Your browser does not support the audio tag.
+                </audio>
+              )}
+            </div>
+          ) : (
+            <Message key={index} payload={message} />
+          )
         ))}
         <div ref={chatBottomRef}></div>
       </div>
