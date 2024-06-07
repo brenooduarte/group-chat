@@ -4,7 +4,6 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
   addDoc as sendMessage,
   collection,
-  orderBy,
   query,
   serverTimestamp,
 } from "firebase/firestore";
@@ -82,15 +81,15 @@ export const ChatRoom = () => {
           message && message.contentType ? (
             <div key={index}>
               {message.contentType.startsWith('image/') && 
-              <img src={message.downloadURL} alt="Image" className='image-message' />}
+              <img src={message.downloadURL} alt="Image" className={styles.image_message} />}
               {message.contentType.startsWith('video/') && (
-                <video controls>
+                <video className={styles.video_message} controls>
                   <source src={message.downloadURL} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               )}
               {message.contentType.startsWith('audio/') && (
-                <audio controls>
+                <audio controls type="audio/mpeg">
                   <source src={message.downloadURL} />
                   Your browser does not support the audio tag.
                 </audio>

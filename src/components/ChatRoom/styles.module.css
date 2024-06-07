@@ -18,8 +18,18 @@
   background: #171b27;
 }
 
-.image-message {
-  border-radius: 0;
-  height: auto !important;
-  width: 100% !important;
+.image_message {
+  border-radius: 0.925rem 0.925rem 0.925rem 0;
+  border: 4px solid #2e619f;
+  object-fit: cover;
+  height: auto;
+  width: 250px;
+}
+
+.video_message {
+  border-radius: 0.925rem 0.925rem 0.925rem 0;
+  border: 4px solid #2e619f;
+  object-fit: cover;
+  height: auto;
+  width: 250px;
 }
