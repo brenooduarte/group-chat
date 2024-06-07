@@ -1,8 +1,19 @@
 import React from 'react';
 import styles from './styles.module.css';
 import { auth } from '../../main';
-import { formatDatetime } from '../../utils/date';
 import classNames from 'classnames';
+
+const formatDatetime = (date) => {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  if (isNaN(dateObj.getTime())) {
+    console.error('Invalid date:', date);
+    return { hours: undefined, minutes: undefined };
+  }
+
+  const hours = dateObj.getHours();
+  const minutes = dateObj.getMinutes();
+  return { hours, minutes };
+};
 
 export const Message = ({ payload }) => {
   const {
@@ -42,7 +53,7 @@ export const Message = ({ payload }) => {
       <div className={styles.content}>
         <span>{username}</span>
         <p>{text}</p>
-        {hours && minutes && (
+        {hours !== undefined && minutes !== undefined && (
           <small>{`${hours}:${minutes}`}</small>
         )}
       </div>
