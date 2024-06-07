@@ -31,8 +31,6 @@ export const ChatRoom = () => {
   const displayFile = (url) => {
     setFileDisplayUrl(url);
     setViewFile(true);
-    console.log(url);
-    console.log(viewFile)
   };
 
   const closeFileDisplay = () => {
@@ -64,6 +62,7 @@ export const ChatRoom = () => {
       }));
       const sortedMessages = combinedMessages.sort((a, b) => a.createdAt - b.createdAt);
        setMergedMessages(()=>[...sortedMessages]);
+       window.scrollTo(0, document.body.scrollHeight);
     }
   }, [messages, mediaFiles]);
 
